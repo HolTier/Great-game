@@ -1,7 +1,7 @@
 # compiled output  
-/dist  
-/tmp  
-/out-tsc  
+**/dist  
+**/tmp  
+**/out-tsc  
   
 # dependencies  
 /node_modules  
@@ -35,3 +35,6 @@ testem.log
 # System Files  
 .DS_Store  
 Thumbs.db  
+Great-game/.vscode/extensions.json
+*/Great-game/.vscode/launch.json
+Great-game/.vscode/launch.json
