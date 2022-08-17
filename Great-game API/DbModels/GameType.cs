@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Great_game_API.DbModels
 {
@@ -8,6 +9,7 @@ namespace Great_game_API.DbModels
         [Required]
         public string GameName { get; set; } = null!;
         public float TotalPrize { get; set; }
+        [JsonIgnore]
         public ICollection<Game> Games { get; set; }
 
     }

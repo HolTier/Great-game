@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Great_game_API.DbModels
 {
@@ -13,7 +14,8 @@ namespace Great_game_API.DbModels
         public float Balance { get; set; }
         public string? Role { get; set; }
 
-        public ICollection<UserGame> UserGames { get; set; }
+        [JsonIgnore]
+        public ICollection<UserGame>? UserGames { get; set; }
 
     }
 }
