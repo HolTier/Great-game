@@ -34,7 +34,7 @@ namespace Great_game_API.Migrations
                     Password = table.Column<string>(type: "text", nullable: false),
                     Cash = table.Column<float>(type: "real", nullable: false),
                     Balance = table.Column<float>(type: "real", nullable: false),
-                    Role = table.Column<string>(type: "text", nullable: true)
+                    Role = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {

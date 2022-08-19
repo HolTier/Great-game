@@ -1,28 +1,26 @@
 import React, {useState} from 'react';
-import {Link} from "react-router-dom";
-import {BrowserRouter as Router} from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 
-function Login(props) {
+const Register = () => {
     const navigate = useNavigate();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [responseStatus, setResponseStatus] = useState(0);
     const [authenticated, setAuthenticated] = useState(sessionStorage.getItem(sessionStorage.getItem("authenticated")|| false));
 
-    const tryLogin = async (usernameLogin, passwordLogin) => {
-        await fetch('/api/User/Login', {
-                method: 'POST',
-                body: JSON.stringify({
-                    username: usernameLogin,
-                    password: passwordLogin,
-                }),
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8',
-                    'Access-Control-Allow-Headers': 'privatekey'
-                }
-            })
+    const tryRegister = async (usernameLogin, passwordLogin) => {
+        await fetch('/api/User/Register', {
+            method: 'POST',
+            body: JSON.stringify({
+                username: usernameLogin,
+                password: passwordLogin,
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Access-Control-Allow-Headers': 'privatekey'
+            }
+        })
             .then((response) => {
                 if(!response.ok) throw new Error(response.status);
                 else return response.json();
@@ -37,11 +35,9 @@ function Login(props) {
             });
     };
 
-
     const handleSubmit = (e) => {
         e.preventDefault();
-        tryLogin(username, password);
-
+        tryRegister(username, password);
         console.log("user: " + username + " password: " + password);
 
         //navigate("/home");
@@ -50,7 +46,7 @@ function Login(props) {
 
     return (
         <div>
-            <h1>Login</h1>
+            <h1>Register</h1>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Username</label><br />
@@ -60,17 +56,17 @@ function Login(props) {
                 <div>
                     <label>Password</label><br />
                     <input type="password" name="password" placeholder="Password"
-                        onChange={(e) => {setPassword(e.target.value)}}/>
+                           onChange={(e) => {setPassword(e.target.value)}}/>
                 </div>
                 <div>
-                    <input type="submit" value="Login"/>
+                    <input type="submit" value="Register"/>
                 </div>
             </form>
             <p>
-                Don't have an account yet? <Link to="/register">Sign Up</Link>
+                Do you have an account already?<Link to="/"> Sign in. </Link>
             </p>
         </div>
     );
-}
+};
 
-export default Login;
+export default Register;

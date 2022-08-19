@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Great_game_API.Migrations
 {
     [DbContext(typeof(GreatGameDataContext))]
-    [Migration("20220816221908_Initial")]
+    [Migration("20220819205135_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -87,6 +87,7 @@ namespace Great_game_API.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Role")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("UserName")

@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Great_game_API.DbModels;
 using Microsoft.EntityFrameworkCore;
+using Great_game_API.ModelDto;
+using Great_game_API.Repository;
 
 namespace Great_game_API.Controllers
 {
@@ -29,6 +31,61 @@ namespace Great_game_API.Controllers
                 await _context.Users.AddAsync(user);
                 await _context.SaveChangesAsync();
                 return Ok();
+            }
+        }
+
+        //Login
+        [HttpPost("Login")]
+        public async Task<IActionResult> LoginAsync(LoginDto login)
+        {
+            if(login == null)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == login.UserName);
+                if(user == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return new JsonResult(user);
+                }
+            }
+        }
+
+        //Register
+        [HttpPost("Register")]
+        public async Task<IActionResult> RegisterAsync(LoginDto login)
+        {
+            if (login == null)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                
+                User user = new User()
+                {
+                    UserName = login.UserName,
+                    Password = login.Password,
+                };
+                var result = await _context.Users.FirstOrDefaultAsync(x => x.UserName == user.UserName);
+                if (result == null)
+                {
+                    await _context.Users.AddAsync(user);
+                    var newUser = await _context.Users.FirstOrDefaultAsync(x => x.UserName == login.UserName);
+
+                    await _context.SaveChangesAsync();
+                    return new JsonResult(newUser);
+                }
+                else
+                {
+                    return BadRequest();
+                }
+                
             }
         }
 

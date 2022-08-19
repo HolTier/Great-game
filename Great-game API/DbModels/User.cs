@@ -10,9 +10,9 @@ namespace Great_game_API.DbModels
         public string UserName { get; set; } = null!;
         [Required]
         public string Password { get; set; } = null!;
-        public float Cash { get; set; }
-        public float Balance { get; set; }
-        public string? Role { get; set; }
+        public float Cash { get; set; } = 0;
+        public float Balance { get; set; } = 0;
+        public string Role { get; set; } = "User";
 
         [JsonIgnore]
         public ICollection<UserGame>? UserGames { get; set; }

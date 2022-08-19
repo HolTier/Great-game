@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import { Navigate } from "react-router-dom";
+import {Navigate} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import Navbar from "../components/Navbar";
 
 function Home(props) {
     const [authenticated, setAuthenticated] = useState(null);
@@ -14,13 +16,16 @@ function Home(props) {
 
     if (!sessionStorage.getItem('authenticated')) {
         console.log("Home " + authenticated);
-        return <Navigate replace to="/" />;
+        return <Navigate replace to="/login" />;
     }
     else{
-        console.log('jestem');
+        //console.log('jestem');
         return (
             <div>
-                <h1>Home</h1>
+                <Navbar />
+                <Routes>
+                    <Route />
+                </Routes>
             </div>
         );
     }

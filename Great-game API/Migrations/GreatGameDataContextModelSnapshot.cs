@@ -85,6 +85,7 @@ namespace Great_game_API.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Role")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("UserName")
