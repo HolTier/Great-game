@@ -10,6 +10,10 @@ function Login(props) {
     const [password, setPassword] = useState("");
     const [authenticated, setAuthenticated] = useState(sessionStorage.getItem(sessionStorage.getItem("authenticated")|| false));
 
+    const tryLogin = async (usernameLogin, passwordLogin) => {
+        await fetch()
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
         sessionStorage.setItem('authenticated', true);
@@ -23,12 +27,12 @@ function Login(props) {
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Username</label><br />
-                    <input type="text" name="username" placeholder="Username"
+                    <input type="text" name="username" placeholder="Username" value={username}
                            onChange={e=>props.updateData('username', e.target.value)}/>
                 </div>
                 <div>
                     <label>Password</label><br />
-                    <input type="password" name="password" placeholder="Password"
+                    <input type="password" name="password" placeholder="Password" value={password}
                         onChange={e=>props.updateData('password', e.target.value)}/>
                 </div>
                 <div>
