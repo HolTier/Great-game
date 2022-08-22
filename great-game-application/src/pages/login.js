@@ -2,12 +2,14 @@ import React, {useState} from 'react';
 import {Link} from "react-router-dom";
 import {BrowserRouter as Router} from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import LoginDto from "../models/loginDto";
 
 
 function Login(props) {
     const navigate = useNavigate();
     const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+    const [password, setPassword] = useState([]);
+    const [user, setUser] = useState()
     const [responseStatus, setResponseStatus] = useState(0);
     const [authenticated, setAuthenticated] = useState(sessionStorage.getItem(sessionStorage.getItem("authenticated")|| false));
 
@@ -29,20 +31,20 @@ function Login(props) {
             })
             .then((data) => {
                 sessionStorage.setItem('authenticated', true);
-                console.log('ok');
-                navigate('/');
+                sessionStorage.setItem('user', JSON.stringify(data));
+                navigate('/home');
             })
             .catch((err) => {
                 console.log(err.message);
             });
     };
 
+    const login = () => {
 
+    }
     const handleSubmit = (e) => {
         e.preventDefault();
         tryLogin(username, password);
-
-        console.log("user: " + username + " password: " + password);
 
         //navigate("/home");
         //console.log(sessionStorage.getItem('authenticated'));

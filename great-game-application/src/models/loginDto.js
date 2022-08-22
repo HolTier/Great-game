@@ -2,7 +2,7 @@ export default class LoginDto{
     username;
     password;
     constructor(username, password) {
-        this.username = username;
+        this.userName = username;
         this.password = password;
     }
 }

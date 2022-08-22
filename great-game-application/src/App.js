@@ -5,6 +5,7 @@ import Home from "./pages/home";
 import LoginDto from "./models/loginDto";
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Register from "./pages/register";
+import Main from "./pages/main";
 
 class App extends React.Component{
     constructor(props) {
@@ -40,9 +41,10 @@ class App extends React.Component{
             <div>
 
                 <Routes>
-                    <Route exact path="/" element={<Home />} />
+
                     <Route path="/register" element={<Register />} />
                     <Route path="/login" element={<Login />} />
+                    <Route path="/*" element={<Main />} />
                 </Routes>
            </div>
         );

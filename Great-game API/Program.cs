@@ -13,6 +13,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<GreatGameDataContext>(
     o => o.UseNpgsql(builder.Configuration.GetConnectionString("GreatGameDb")));
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

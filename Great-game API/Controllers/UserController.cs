@@ -51,7 +51,9 @@ namespace Great_game_API.Controllers
                 }
                 else
                 {
-                    return new JsonResult(user);
+                    
+                    //var json = new JsonResult(user);
+                    return new JsonResult(new LoginDto() { Password = user.Password, UserName = user.UserName});
                 }
             }
         }
