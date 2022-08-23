@@ -31,13 +31,16 @@ namespace Great_game_API.Migrations
                     NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("GameId"));
 
                     b.Property<DateTime>("EndDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("date");
 
                     b.Property<int>("GameTypeId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("StartDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("date");
+
+                    b.Property<int[]>("WinningNumbers")
+                        .HasColumnType("integer[]");
 
                     b.HasKey("GameId");
 
@@ -54,16 +57,48 @@ namespace Great_game_API.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("GameTypeId"));
 
+                    b.Property<float>("Cost")
+                        .HasColumnType("real");
+
                     b.Property<string>("GameName")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<float>("TotalPrize")
+                    b.Property<float>("Prize")
                         .HasColumnType("real");
 
                     b.HasKey("GameTypeId");
 
                     b.ToTable("GameTypes");
+                });
+
+            modelBuilder.Entity("Great_game_API.DbModels.Role", b =>
+                {
+                    b.Property<int>("RoleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("RoleId"));
+
+                    b.Property<string>("RoleName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("RoleId");
+
+                    b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = 1,
+                            RoleName = "Admin"
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            RoleName = "User"
+                        });
                 });
 
             modelBuilder.Entity("Great_game_API.DbModels.User", b =>
@@ -84,15 +119,16 @@ namespace Great_game_API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("RoleId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Users");
                 });
@@ -110,8 +146,8 @@ namespace Great_game_API.Migrations
                     b.Property<float>("Prize")
                         .HasColumnType("real");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("text");
+                    b.Property<int[]>("UserNumbers")
+                        .HasColumnType("integer[]");
 
                     b.HasKey("UserId", "GameId");
 
@@ -129,6 +165,17 @@ namespace Great_game_API.Migrations
                         .IsRequired();
 
                     b.Navigation("GameType");
+                });
+
+            modelBuilder.Entity("Great_game_API.DbModels.User", b =>
+                {
+                    b.HasOne("Great_game_API.DbModels.Role", "Role")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("Great_game_API.DbModels.UserGame", b =>
@@ -158,6 +205,11 @@ namespace Great_game_API.Migrations
             modelBuilder.Entity("Great_game_API.DbModels.GameType", b =>
                 {
                     b.Navigation("Games");
+                });
+
+            modelBuilder.Entity("Great_game_API.DbModels.Role", b =>
+                {
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Great_game_API.DbModels.User", b =>

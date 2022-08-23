@@ -2,5 +2,8 @@
 {
     public class AddTypeDto
     {
+        public string GameName { get; set; }
+        public float Prize { get; set; }
+        public float Cost { get; set; }
     }
 }

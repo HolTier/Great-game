@@ -17,7 +17,8 @@ namespace Great_game_API.Migrations
                     GameTypeId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     GameName = table.Column<string>(type: "text", nullable: false),
-                    TotalPrize = table.Column<float>(type: "real", nullable: false)
+                    Prize = table.Column<float>(type: "real", nullable: false),
+                    Cost = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -25,20 +26,16 @@ namespace Great_game_API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "Roles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    RoleId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    UserName = table.Column<string>(type: "text", nullable: false),
-                    Password = table.Column<string>(type: "text", nullable: false),
-                    Cash = table.Column<float>(type: "real", nullable: false),
-                    Balance = table.Column<float>(type: "real", nullable: false),
-                    Role = table.Column<string>(type: "text", nullable: false)
+                    RoleName = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_Roles", x => x.RoleId);
                 });
 
             migrationBuilder.CreateTable(
@@ -47,9 +44,10 @@ namespace Great_game_API.Migrations
                 {
                     GameId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    GameTypeId = table.Column<int>(type: "integer", nullable: false)
+                    StartDate = table.Column<DateTime>(type: "date", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "date", nullable: false),
+                    GameTypeId = table.Column<int>(type: "integer", nullable: false),
+                    WinningNumbers = table.Column<int[]>(type: "integer[]", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -63,13 +61,36 @@ namespace Great_game_API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    UserName = table.Column<string>(type: "text", nullable: false),
+                    Password = table.Column<string>(type: "text", nullable: false),
+                    Cash = table.Column<float>(type: "real", nullable: false),
+                    Balance = table.Column<float>(type: "real", nullable: false),
+                    RoleId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Users_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "RoleId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserGames",
                 columns: table => new
                 {
                     UserId = table.Column<int>(type: "integer", nullable: false),
                     GameId = table.Column<int>(type: "integer", nullable: false),
-                    Status = table.Column<string>(type: "text", nullable: true),
-                    Prize = table.Column<float>(type: "real", nullable: false)
+                    Prize = table.Column<float>(type: "real", nullable: false),
+                    UserNumbers = table.Column<int[]>(type: "integer[]", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -88,6 +109,15 @@ namespace Great_game_API.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "RoleId", "RoleName" },
+                values: new object[,]
+                {
+                    { 1, "Admin" },
+                    { 2, "User" }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Games_GameTypeId",
                 table: "Games",
@@ -97,6 +127,11 @@ namespace Great_game_API.Migrations
                 name: "IX_UserGames_GameId",
                 table: "UserGames",
                 column: "GameId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_RoleId",
+                table: "Users",
+                column: "RoleId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -112,6 +147,9 @@ namespace Great_game_API.Migrations
 
             migrationBuilder.DropTable(
                 name: "GameTypes");
+
+            migrationBuilder.DropTable(
+                name: "Roles");
         }
     }
 }

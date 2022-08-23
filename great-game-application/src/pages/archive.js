@@ -8,7 +8,8 @@ const Archive = () => {
         prize: 121111111,
         start:'20-10-2022',
         end: '20-10-2022',
-        winningNum: [1,2,10,22,49,50],
+        winningNumbers: [1,2,10,22,49,50],
+        userNumbers: [1, 2, 10, 22, 49, 50]
     }];
     return (
         <div>

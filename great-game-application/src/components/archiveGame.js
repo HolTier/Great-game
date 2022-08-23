@@ -14,7 +14,15 @@ const ArchiveGame = (props) => {
             </div>
             <div>
                 <label>Winning numbers:
-                    {props.archiveGame.winningNum.map(num =>
+                    {props.archiveGame.winningNumbers.map(num =>
+                        <label key={num}>
+                            {num}, {' '}
+                        </label>)}
+                </label>
+            </div>
+            <div>
+                <label>Your numbers:
+                    {props.archiveGame.userNumbers.map(num =>
                         <label key={num}>
                             {num}, {' '}
                         </label>)}

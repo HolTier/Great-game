@@ -1,8 +1,8 @@
 ﻿namespace Great_game_API.ModelDto
 {
-    public class ChangePasswordDto
+    public class AddCashDto
     {
         public string Username { get; set; }
-        public string Password { get; set; }
+        public float Cash { get; set; }
     }
 }

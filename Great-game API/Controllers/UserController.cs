@@ -44,7 +44,7 @@ namespace Great_game_API.Controllers
             }
             else
             {
-                var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == login.UserName);
+                var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == login.UserName && x.Password == login.Password);
                 if(user == null)
                 {
                     return NotFound();
@@ -53,7 +53,7 @@ namespace Great_game_API.Controllers
                 {
                     
                     //var json = new JsonResult(user);
-                    return new JsonResult(new LoginDto() { Password = user.Password, UserName = user.UserName});
+                    return new JsonResult(user);
                 }
             }
         }
@@ -78,9 +78,9 @@ namespace Great_game_API.Controllers
                 if (result == null)
                 {
                     await _context.Users.AddAsync(user);
-                    var newUser = await _context.Users.FirstOrDefaultAsync(x => x.UserName == login.UserName);
-
                     await _context.SaveChangesAsync();
+
+                    var newUser = await _context.Users.FirstOrDefaultAsync(x => x.UserName == login.UserName);
                     return new JsonResult(newUser);
                 }
                 else
@@ -140,6 +140,21 @@ namespace Great_game_API.Controllers
             }
         }
 
+        [HttpGet("GetUserName/{username}")]
+        public async Task<IActionResult> GetUserByNameAsync(string username)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == username);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return new JsonResult(user);
+            }
+        }
+
         //Delete user
         [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> DeleteUserByIdAsync(int id)
@@ -158,6 +173,158 @@ namespace Great_game_API.Controllers
             }
         }
 
+        [HttpDelete("DeleteName/{username}")]
+        public async Task<IActionResult> DeleteUserByNameAsync(string username)
+        {
+            var user = await _context.Users.FirstAsync(x => x.UserName == username);
 
+            if (user == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                _context.Users.Remove(user);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+        }
+
+        [HttpPut("ChangeUsername")]
+        public async Task<IActionResult> ChangeUsernameAsync(ChangeUsernameDto changeUsername)
+        {
+            if(changeUsername == null)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                var result = await _context.Users.FirstAsync(x => x.UserName == changeUsername.OldUsername);
+                if(result == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    result.UserName = changeUsername.NewUsername;
+                    _context.Users.Update(result);
+                    await _context.SaveChangesAsync();
+                    return Ok();
+                }
+            }
+        }
+
+        [HttpPut("ChangePassword")]
+        public async Task<IActionResult> ChangePasswordAsync(ChangePasswordDto changePassword)
+        {
+            if (changePassword == null)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                var result = await _context.Users.FirstAsync(x => x.UserName == changePassword.Username);
+                if (result == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    result.Password = changePassword.Password;
+                    _context.Users.Update(result);
+                    await _context.SaveChangesAsync();
+                    return Ok();
+                }
+            }
+        }
+
+        [HttpPut("AddCash")]
+        public async Task<IActionResult> AddCashAsync(AddCashDto cash)
+        {
+            if (cash == null)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                var result = await _context.Users.FirstAsync(x => x.UserName == cash.Username);
+                if (result == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    result.Cash += cash.Cash;
+                    _context.Users.Update(result);
+                    await _context.SaveChangesAsync();
+                    return Ok();
+                }
+            }
+        }
+
+        [HttpPut("ChangeRole")]
+        public async Task<IActionResult> ChangeRoleAsync(ChangeRoleDto changeRole)
+        {
+            if (changeRole == null)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                var result = await _context.Users.FirstAsync(x => x.UserName == changeRole.Username);
+                if (result == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    result.RoleId = changeRole.RoleId;
+                    _context.Users.Update(result);
+                    await _context.SaveChangesAsync();
+                    return Ok();
+                }
+            }
+        }
+
+        [HttpGet("Roles")]
+        public async Task<IActionResult> GetRolesAsync()
+        {
+            var result = await _context.Roles.ToListAsync();
+            return new JsonResult(result);
+        }
+
+        [HttpPost("AddUserGame/{cost}")]
+        public async Task<IActionResult> AddUserGameAsync(UserGame addUserGame, float cost)
+        {
+            if(addUserGame == null)
+            { 
+                return BadRequest();
+            }
+            else
+            {
+                
+                var result = await _context.Users.FindAsync(addUserGame.UserId);
+
+                if(result == null)
+                {
+                    return NotFound(result);
+                }
+                else
+                {
+                    await _context.UserGames.AddAsync(addUserGame);
+
+                    if(cost > result.Cash)
+                    {
+                        return BadRequest("No cash");
+                    }
+
+                    result.Cash -= cost;
+                    _context.Users.Update(result);
+                    await _context.SaveChangesAsync();
+
+                    return Ok();
+                }                
+            }
+        }
     }
 }

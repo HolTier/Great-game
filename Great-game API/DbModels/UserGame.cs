@@ -15,8 +15,8 @@ namespace Great_game_API.DbModels
         public int GameId { get; set; }
         [JsonIgnore]
         public Game Game { get; set; }
-
-        public string? Status { get; set; }
         public float Prize { get; set; }
+        public int[]? UserNumbers { get; set; }
+
     }
 }
