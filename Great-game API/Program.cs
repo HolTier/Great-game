@@ -1,4 +1,5 @@
 using Great_game_API.DbModels;
+using Great_game_API.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,7 +13,6 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<GreatGameDataContext>(
     o => o.UseNpgsql(builder.Configuration.GetConnectionString("GreatGameDb")));
-
 
 var app = builder.Build();
 
