@@ -11,7 +11,7 @@ namespace Great_game_API.DbModels
         public float Prize { get; set; }
         public float Cost { get; set; }
         [JsonIgnore]
-        public ICollection<Game> Games { get; set; }
+        public ICollection<Game>? Games { get; set; }
 
     }
 }

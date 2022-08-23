@@ -139,7 +139,7 @@ namespace Great_game_API.Controllers
 
                 })
                 .Where(x => 
-                (x.StartDate < DateTime.Now) && (x.EndDate > DateTime.Now)) //Check date
+                (x.StartDate <= DateTime.Now) && (x.EndDate >= DateTime.Now)) //Check date
                 .ToListAsync();
 
             if(result == null)
@@ -153,9 +153,13 @@ namespace Great_game_API.Controllers
         }
 
         [HttpGet("ArchiveGames/{username}")]
-        public async Task<IActionResult> GetArchiveGamesAsync(string Username)
+        public async Task<IActionResult> GetArchiveGamesAsync(string username)
         {
-            var user = await _context.Users.FirstAsync(x => x.UserName == Username);
+            var user = await _context.Users.FirstAsync(x => x.UserName == username);
+            if (user == null)
+            {
+                return NotFound();
+            }
             var result = await _context.Games
                 .Join(_context.UserGames, //Join UserGames to games
                 g => g.GameId,
@@ -216,7 +220,12 @@ namespace Great_game_API.Controllers
                 }
                 else
                 {
-                    result = type;
+                    if(type.GameName != null && type.GameName != string.Empty)
+                        result.GameName = type.GameName;
+
+                    result.Prize = type.Prize;
+                    result.Cost = type.Cost;
+
                     _context.GameTypes.Update(result);
                     await _context.SaveChangesAsync();
 
@@ -224,5 +233,34 @@ namespace Great_game_API.Controllers
                 }
             }
         }
+
+        [HttpPut("ForceWin")]
+        public async Task<IActionResult> ForceWinGame(ForceWinDto winDto)
+        {
+            if(winDto == null)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                var result = await _context.Games.FindAsync(winDto.GameId);
+                if(result == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    result.WinningNumbers = winDto.WinningNumbers;
+                    result.EndDate = DateTime.Now;
+                    //result.EndDate.AddDays();
+
+                    _context.Games.Update(result);
+                    await _context.SaveChangesAsync();
+
+                    return Ok();
+                }
+            }
+        }
+
     }
 }

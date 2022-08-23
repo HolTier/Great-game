@@ -293,8 +293,8 @@ namespace Great_game_API.Controllers
             return new JsonResult(result);
         }
 
-        [HttpPost("AddUserGame/{cost}")]
-        public async Task<IActionResult> AddUserGameAsync(UserGame addUserGame, float cost)
+        [HttpPost("AddUserGame")]
+        public async Task<IActionResult> AddUserGameAsync(AddUserGameDto addUserGame)
         {
             if(addUserGame == null)
             { 
@@ -303,7 +303,7 @@ namespace Great_game_API.Controllers
             else
             {
                 
-                var result = await _context.Users.FindAsync(addUserGame.UserId);
+                var result = await _context.Users.FirstAsync(x => x.UserName == addUserGame.UserName);
 
                 if(result == null)
                 {
@@ -311,20 +311,60 @@ namespace Great_game_API.Controllers
                 }
                 else
                 {
-                    await _context.UserGames.AddAsync(addUserGame);
+                    var type = await _context.GameTypes.FindAsync(addUserGame.GameTypeId);
 
-                    if(cost > result.Cash)
+                    if(type == null)
+                    {
+                        return NotFound(type);
+                    }
+
+                    if(type.Cost > result.Cash)
                     {
                         return BadRequest("No cash");
                     }
 
-                    result.Cash -= cost;
-                    _context.Users.Update(result);
-                    await _context.SaveChangesAsync();
+                    result.Cash -= type.Cost;
 
+                    UserGame userGame = new UserGame()
+                    {
+                        UserId = result.Id,
+                        GameId = addUserGame.GameId,
+                        UserNumbers = addUserGame.UserNumbers
+                    };
+
+                    _context.Users.Update(result);
+                    await _context.UserGames.AddAsync(userGame);
+                    await _context.SaveChangesAsync();
+                    
                     return Ok();
                 }                
             }
         }
+
+        [HttpGet("GetUserGames/{username}")]
+        public async Task<IActionResult> GetUserGamesAsync(string username)
+        {
+            var result = _context.Users.FirstOrDefault(x => x.UserName == username);
+
+            if(result == null)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                var userGames = await _context.UserGames.Where(x => x.UserId == result.Id).ToListAsync();
+                if(userGames == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return new JsonResult(userGames);
+                }
+            }
+        }
     }
+
+    
+    
 }

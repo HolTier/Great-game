@@ -89,7 +89,6 @@ namespace Great_game_API.Migrations
                 {
                     UserId = table.Column<int>(type: "integer", nullable: false),
                     GameId = table.Column<int>(type: "integer", nullable: false),
-                    Prize = table.Column<float>(type: "real", nullable: false),
                     UserNumbers = table.Column<int[]>(type: "integer[]", nullable: true)
                 },
                 constraints: table =>

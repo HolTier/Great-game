@@ -9,13 +9,12 @@ namespace Great_game_API.DbModels
         [Key, Column(Order = 1)]
         public int UserId { get; set; }
         [JsonIgnore]
-        public User User { get; set; }
+        public User? User { get; set; }
 
         [Key, Column(Order = 2)]
         public int GameId { get; set; }
         [JsonIgnore]
-        public Game Game { get; set; }
-        public float Prize { get; set; }
+        public Game? Game { get; set; }
         public int[]? UserNumbers { get; set; }
 
     }

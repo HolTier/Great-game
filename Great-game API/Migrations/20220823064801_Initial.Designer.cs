@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Great_game_API.Migrations
 {
     [DbContext(typeof(GreatGameDataContext))]
-    [Migration("20220823054047_Initial")]
+    [Migration("20220823064801_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -144,9 +144,6 @@ namespace Great_game_API.Migrations
                     b.Property<int>("GameId")
                         .HasColumnType("integer")
                         .HasColumnOrder(2);
-
-                    b.Property<float>("Prize")
-                        .HasColumnType("real");
 
                     b.Property<int[]>("UserNumbers")
                         .HasColumnType("integer[]");

@@ -143,9 +143,6 @@ namespace Great_game_API.Migrations
                         .HasColumnType("integer")
                         .HasColumnOrder(2);
 
-                    b.Property<float>("Prize")
-                        .HasColumnType("real");
-
                     b.Property<int[]>("UserNumbers")
                         .HasColumnType("integer[]");
 
