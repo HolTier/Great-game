@@ -1,6 +1,7 @@
 ﻿using Great_game_API.DbModels;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 
 namespace Great_game_API.Services
 {
@@ -26,16 +27,16 @@ namespace Great_game_API.Services
                 using (var scope = _services.CreateScope())
                 {
                     var _context = scope.ServiceProvider.GetRequiredService<GreatGameDataContext>();
-                    var result = await _context.Games.Where(x => x.EndDate == DateTime.Now && x.WinningNumbers == null).ToListAsync();
+                    var result = await _context.Games.Where(x => x.EndDate <= DateTime.Now && x.WinningNumbers == null).ToListAsync();
                     
-                    if (result != null)
+                    if (result != null && (result as List<Game>).Count > 0)
                     {
                         
                         foreach (var game in result)
                         {
                             var rnd = new Random();
-                            var numbers = Enumerable.Range(0, 100).OrderBy(x => rnd.Next()).Take(6);
-                            int[] winNum = (int[])numbers;
+                            var numbers = Enumerable.Range(1, 50).OrderBy(x => rnd.Next()).Take(6).ToArray();
+                            int[] winNum = numbers;
 
                             game.WinningNumbers = winNum;
 
@@ -45,7 +46,8 @@ namespace Great_game_API.Services
                     
                     }
 
-                    System.Diagnostics.Debug.WriteLine("Working at " + DateTime.Now);
+                    //System.Diagnostics.Debug.WriteLine("Works at " + DateTime.Now);
+                    System.Console.WriteLine("Worker works at " + DateTime.Now);
 
                     await Task.Delay(10000, stoppingToken);
                 }
