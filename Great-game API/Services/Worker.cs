@@ -8,11 +8,13 @@ namespace Great_game_API.Services
     {
         //private readonly GreatGameDataContext _context;
         private readonly IServiceProvider _services;
+        //private readonly ILogger<Worker> _logger;
 
         public Worker(IServiceProvider services)
         {
             //_context = context;
-            services = services;
+            _services = services;
+            //_logger = logger;
             
         }
 
@@ -23,12 +25,12 @@ namespace Great_game_API.Services
             {
                 using (var scope = _services.CreateScope())
                 {
-                   // var _context = scope.ServiceProvider.GetRequiredService<GreatGameDataContext>();
-                    //var result = await _context.Games.Where(x => x.EndDate == DateTime.Now && x.WinningNumbers == null).ToListAsync();
-                    /*
+                    var _context = scope.ServiceProvider.GetRequiredService<GreatGameDataContext>();
+                    var result = await _context.Games.Where(x => x.EndDate == DateTime.Now && x.WinningNumbers == null).ToListAsync();
+                    
                     if (result != null)
                     {
-                        /*
+                        
                         foreach (var game in result)
                         {
                             var rnd = new Random();
@@ -39,14 +41,14 @@ namespace Great_game_API.Services
 
                             _context.Games.Update(game);
                             await _context.SaveChangesAsync();
-                        }*/
-                    await Task.Delay(10000, stoppingToken);
+                        }
+                    
                     }
 
-                    //System.Diagnostics.Debug.WriteLine("Working");
+                    System.Diagnostics.Debug.WriteLine("Working at " + DateTime.Now);
 
-                    
-                //}
+                    await Task.Delay(10000, stoppingToken);
+                }
             }
         }
     }
