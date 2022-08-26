@@ -5,9 +5,10 @@ const Game = (props) => {
     const [numbers, setNumbers] = useState([1, 1, 1, 1, 1, ]);
     const [visible, setVisible] = useState(false);
     const [errorMessage, setErrorMessage] = useState("Error");
+
     const handleNumbersChanges = index => e => {
-        let newArr = [...numbers]; // copying the old datas array
-        newArr[index] = parseInt(e.target.value); // replace e.target.value with whatever you want to change it to
+        let newArr = [...numbers]; //copy numbers array
+        newArr[index] = parseInt(e.target.value);
 
         setNumbers(newArr);
     }

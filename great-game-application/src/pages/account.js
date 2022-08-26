@@ -1,29 +1,88 @@
 import React, {useState} from 'react';
 import LoginDto from "../models/loginDto";
+import AccountInformation from "../components/accountInformation";
 
 const Account = () => {
-    const newUser = JSON.parse(sessionStorage.getItem('user'));
-    const [user, setUser] = useState(Object.assign(new LoginDto(), newUser));
+    const [username, setUsername] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [addCash, setAddCash] = useState();
+
+    const tryPutChange = async (address, jsonBody) => {
+        await fetch('/api/User/' + address, {
+            method: 'PUT',
+            body: jsonBody ,
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Access-Control-Allow-Headers': 'privatekey'
+            }
+        })
+            .then((response) => {
+                if(!response.ok) throw new Error(response.status);
+                else return response.json();
+            })
+            .then((data) => {
+                console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                sessionStorage.setItem('user', JSON.stringify(data));
+                window.location.reload(false);
+            })
+            .catch((err) => {
+                console.log(err.message);
+            });
+    };
+
+    const handleSubmitUsername = (e) => {
+        e.preventDefault();
+        tryPutChange('ChangeUsername', JSON.stringify({
+            oldUsername: JSON.parse(sessionStorage.getItem('user')).userName,
+            newUsername: username,
+        }));
+    }
+
+    const handleSubmitPassword = (e) => {
+        e.preventDefault();
+        console.log(newPassword);
+        tryPutChange('ChangePassword', JSON.stringify({
+            username: JSON.parse(sessionStorage.getItem('user')).userName,
+            password: newPassword,
+        }));
+    }
+
+    const handleSubmitAddCash = (e) => {
+        e.preventDefault();
+        console.log(JSON.parse(sessionStorage.getItem('user')));
+        tryPutChange('AddCash', JSON.stringify({
+            username: JSON.parse(sessionStorage.getItem('user')).userName,
+            cash: parseInt(addCash),
+        }));
+    }
+
     return (
         <div>
             <h1>Account</h1>
-            <p>{console.log(user)}</p>
-            <div className="accountform">
-                <form>
-                    <div>
+            <AccountInformation />
+            <div className="account-form">
+                <form onSubmit={handleSubmitUsername}>
+                    <div className="change-username">
                         <label>Change username</label><br />
-                        <input type="text" name="changeUsername" placeholder="Username"/>
-                        <input name="changeUsernameBtn" type="button" value="Change"/>
+                        <input type="text" name="changeUsername" placeholder="Username" required
+                            onChange={(e) => {setUsername(e.target.value)}}/>
+                        <input name="changeUsernameBtn" type="submit" value="Change" />
                     </div>
-                    <div>
+                </form>
+                <form onSubmit={handleSubmitPassword}>
+                    <div className="change-password">
                         <label>Change password</label><br />
-                        <input type="password" name="changePassword" placeholder="Password"/>
-                        <input name="changePasswordBtn" type="button" value="Change"/>
+                        <input type="password" name="changePassword" placeholder="Password" required
+                               onChange={(e) => {setNewPassword(e.target.value)}}/>
+                        <input name="changePasswordBtn" type="submit" value="Change"/>
                     </div>
+                </form>
+                <form onSubmit={handleSubmitAddCash}>
                     <div>
                         <label>Add cash</label><br />
-                        <input type="number" name="addCash" placeholder="Add"/>
-                        <input name="addCashBtn" type="button" value="Add"/>
+                        <input type="number" name="addCash" placeholder="Add" required
+                               onChange={(e) => {setAddCash(e.target.value)}}/>
+                        <input name="addCashBtn" type="submit" value="Add"/>
                     </div>
                 </form>
             </div>

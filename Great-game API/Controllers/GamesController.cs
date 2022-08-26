@@ -82,7 +82,7 @@ namespace Great_game_API.Controllers
             return new JsonResult(result);
         }
 
-        [HttpDelete("DeleteGames/{id}")]
+        [HttpDelete("DeleteGame/{id}")]
         public async Task<IActionResult> DeleteGamesAsync(int id)
         {
             if(id == 0)
@@ -102,15 +102,15 @@ namespace Great_game_API.Controllers
             }
         }
 
-        [HttpDelete("DeleteType/{name}")]
-        public async Task<IActionResult> DeleteTypeAsync(string name)
+        [HttpDelete("DeleteType/{id}")]
+        public async Task<IActionResult> DeleteTypeAsync(int id)
         {
-            if (name == null)
+            if (id == 0)
             {
                 return BadRequest();
             }
             {
-                var result = await _context.GameTypes.FirstAsync(x => x.GameName == name);
+                var result = await _context.GameTypes.FindAsync(id);
                 if (result == null)
                 {
                     return NotFound();
@@ -232,7 +232,7 @@ namespace Great_game_API.Controllers
                     gt.Prize,
                     gt.Cost
                 })
-                .Where(y => y.UserId == user.Id) //Check winning numbers length
+                .Where(y => y.UserId == user.Id) //Bierze wszystkie gry uzytkownika
                 .ToListAsync();
 
             if (result == null)

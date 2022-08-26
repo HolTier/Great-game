@@ -209,7 +209,7 @@ namespace Great_game_API.Controllers
                     result.UserName = changeUsername.NewUsername;
                     _context.Users.Update(result);
                     await _context.SaveChangesAsync();
-                    return Ok();
+                    return new JsonResult(result);
                 }
             }
         }
@@ -233,7 +233,7 @@ namespace Great_game_API.Controllers
                     result.Password = changePassword.Password;
                     _context.Users.Update(result);
                     await _context.SaveChangesAsync();
-                    return Ok();
+                    return new JsonResult(result);
                 }
             }
         }
@@ -257,7 +257,7 @@ namespace Great_game_API.Controllers
                     result.Cash += cash.Cash;
                     _context.Users.Update(result);
                     await _context.SaveChangesAsync();
-                    return Ok();
+                    return new JsonResult(result);
                 }
             }
         }
@@ -281,12 +281,12 @@ namespace Great_game_API.Controllers
                     result.RoleId = changeRole.RoleId;
                     _context.Users.Update(result);
                     await _context.SaveChangesAsync();
-                    return Ok();
+                    return new JsonResult(result);
                 }
             }
         }
 
-        [HttpGet("Roles")]
+        [HttpGet("GetRoles")]
         public async Task<IActionResult> GetRolesAsync()
         {
             var result = await _context.Roles.ToListAsync();

@@ -5,8 +5,10 @@ import {Get} from "../api/restapi";
 import {wait} from "@testing-library/user-event/dist/utils";
 
 const Home = () => {
-    const [game, setGame] = useState([]);
+    const [game, setGame] = useState([]);//store active games
     const [canLoad, setCanLoad] = useState(true);
+
+    //Get active game array from api server
     const tryGetGames = async () => {
         await fetch('/api/Games/ActiveGamesUser/'+JSON.parse(sessionStorage.getItem('user')).userName, {
             method: 'GET',
@@ -35,7 +37,7 @@ const Home = () => {
             setCanLoad(false);
         }
         console.log("game"+ game);
-        if(game == null || game.length == 0)
+        if(game == null || game.length === 0)
             return(<p>No active games</p>)
         else
             return (

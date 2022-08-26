@@ -2,7 +2,7 @@
 {
     public class ChangeUsernameDto
     {
-        public string OldUsername { get; set; }
-        public string NewUsername { get; set; }
+        public string OldUsername { get; set; } = null!;
+        public string NewUsername { get; set; } = null!;
     }
 }

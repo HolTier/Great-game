@@ -30,7 +30,7 @@ const ArchiveGame = (props) => {
         <div className="game-container">
             <div>
                 <label>Name: <b>{props.archiveGame.name}</b> </label>
-                <label>Game ID: <b>{props.archiveGame.id}</b> </label>
+                <label>Game ID: <b>{props.archiveGame.gameId}</b> </label>
                 <label>Prize: <b>{props.archiveGame.prize}</b> </label>
                 <label>Cost: <b>{props.archiveGame.cost}</b> </label>
             </div>
