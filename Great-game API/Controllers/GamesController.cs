@@ -70,6 +70,7 @@ namespace Great_game_API.Controllers
         [HttpGet("GetGames")]
         public async Task<IActionResult> GetGamesAsync()
         {
+            //var win = _context.;
             var result = await _context.Games.ToListAsync();
             return new JsonResult(result);
         }
@@ -136,13 +137,54 @@ namespace Great_game_API.Controllers
                     g.StartDate,
                     g.EndDate,
                     gt.Prize,
+                    
 
                 })
                 .Where(x => 
-                (x.StartDate <= DateTime.Now) && (x.EndDate >= DateTime.Now)) //Check date
+                (x.StartDate <= DateTime.Now) && (x.EndDate >= DateTime.Now))//Check date
                 .ToListAsync();
 
             if(result == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return new JsonResult(result);
+            }
+        }
+
+        [HttpGet("ActiveGamesUser/{username}")]
+        public async Task<IActionResult> GetActiveGamesAsync(string username)
+        {
+            var user = await _context.Users.FirstAsync(x => x.UserName == username);
+            if(user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _context.Games
+                .Join(_context.GameTypes, //Join GameTypes to Games
+                g => g.GameTypeId,
+                gt => gt.GameTypeId,
+                (g, gt) => new
+                {
+                    g.GameId,
+                    gt.GameTypeId,
+                    gt.GameName,
+                    g.StartDate,
+                    g.EndDate,
+                    gt.Prize,
+                    gt.Cost
+
+
+                })
+                .Where(x =>
+                ((x.StartDate <= DateTime.Now) && (x.EndDate >= DateTime.Now))&& //Check date
+                (!_context.UserGames.Any(ug => ug.UserId == user.Id && ug.GameId == x.GameId)))
+                .ToListAsync();
+
+            if (result == null)
             {
                 return NotFound();
             }
@@ -188,10 +230,9 @@ namespace Great_game_API.Controllers
                     gug.GameTypeId,
                     gt.GameName,
                     gt.Prize,
+                    gt.Cost
                 })
-                .Where(y => y.StartDate < DateTime.Now && y.EndDate < DateTime.Now && //Check date
-                (y.UserNumbers != null && y.UserNumbers.Length == 6 )&& //Check user number lenght 
-                (y.WinningNumbers != null && y.WinningNumbers.Length == 6)) //Check winning numbers length
+                .Where(y => y.UserId == user.Id) //Check winning numbers length
                 .ToListAsync();
 
             if (result == null)
@@ -250,9 +291,31 @@ namespace Great_game_API.Controllers
                 }
                 else
                 {
+                   
                     result.WinningNumbers = winDto.WinningNumbers;
                     result.EndDate = DateTime.Now;
                     //result.EndDate.AddDays();
+
+                    var userGame = await _context.UserGames.Where(x => x.GameId == result.GameId).ToListAsync();
+
+                    if(userGame != null)
+                    {
+                        var prize = await _context.GameTypes.FindAsync(result.GameTypeId);
+                        if(prize == null)
+                        {
+                            return BadRequest(prize);
+                        }
+
+                        foreach(var game in userGame)
+                        {
+                            var winner = await _context.Users.FindAsync(game.UserId);
+                            if(winner != null)
+                            {
+                                winner.Cash += prize.Prize;
+                                _context.Users.Update(winner);
+                            }
+                        }
+                    }
 
                     _context.Games.Update(result);
                     await _context.SaveChangesAsync();

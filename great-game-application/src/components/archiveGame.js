@@ -1,24 +1,45 @@
 import React from 'react';
 
 const ArchiveGame = (props) => {
-    return (
-        <div className="game-container">
-            <div>
-               <label>Name: {props.archiveGame.name} </label>
-               <label>Game ID: {props.archiveGame.id} </label>
-               <label>Prize: {props.archiveGame.prize}</label>
-            </div>
-            <div>
-                <label>Start: {props.archiveGame.start} </label>
-                <label>End: {props.archiveGame.end}</label>
-            </div>
-            <div>
-                <label>Winning numbers:
+
+    const formatDate = (dateString) => {
+        const options = { year: "numeric", month: "numeric", day: "numeric"}
+        return new Date(dateString).toLocaleDateString(undefined, options)
+    }
+
+    const winningNumbers = () => {
+        if(props.archiveGame.winningNumbers == null)
+        {
+            return (<label></label>)
+        }
+        else
+        {
+            return(
+                <label>
+                    Winning numbers:
                     {props.archiveGame.winningNumbers.map(num =>
                         <label key={num}>
                             {num}, {' '}
                         </label>)}
                 </label>
+            )
+        }
+    }
+
+    return (
+        <div className="game-container">
+            <div>
+                <label>Name: <b>{props.archiveGame.name}</b> </label>
+                <label>Game ID: <b>{props.archiveGame.id}</b> </label>
+                <label>Prize: <b>{props.archiveGame.prize}</b> </label>
+                <label>Cost: <b>{props.archiveGame.cost}</b> </label>
+            </div>
+            <div>
+                <label>Start: <b>{formatDate(props.archiveGame.startDate)}</b> </label><br />
+                <label>End: <b>{formatDate(props.archiveGame.endDate)}</b></label>
+            </div>
+            <div>
+                {winningNumbers()}
             </div>
             <div>
                 <label>Your numbers:

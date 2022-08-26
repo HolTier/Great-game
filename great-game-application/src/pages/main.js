@@ -18,12 +18,10 @@ function Main(props) {
         }
     }, []);
 
-    if (!sessionStorage.getItem('authenticated')) {
-        console.log("Main " + authenticated);
+    if (!sessionStorage.getItem('authenticated') || sessionStorage.getItem('user')==null) {
         return <Navigate replace to="/login" />;
     }
     else{
-        //console.log('jestem');
         return (
             <div>
                 <Navbar />

@@ -109,9 +109,6 @@ namespace Great_game_API.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
 
-                    b.Property<float>("Balance")
-                        .HasColumnType("real");
-
                     b.Property<float>("Cash")
                         .HasColumnType("real");
 

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Great_game_API.Migrations
 {
     [DbContext(typeof(GreatGameDataContext))]
-    [Migration("20220823064801_Initial")]
+    [Migration("20220825082533_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -110,9 +110,6 @@ namespace Great_game_API.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
-
-                    b.Property<float>("Balance")
-                        .HasColumnType("real");
 
                     b.Property<float>("Cash")
                         .HasColumnType("real");

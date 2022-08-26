@@ -11,7 +11,6 @@ namespace Great_game_API.DbModels
         [Required]
         public string Password { get; set; } = null!;
         public float Cash { get; set; } = 0;
-        public float Balance { get; set; } = 0;
         public int RoleId { get; set; } = 2;
         [JsonIgnore]
         public Role Role { get; set; }

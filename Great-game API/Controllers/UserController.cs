@@ -320,7 +320,7 @@ namespace Great_game_API.Controllers
 
                     if(type.Cost > result.Cash)
                     {
-                        return BadRequest("No cash");
+                        return BadRequest("not enough cash");
                     }
 
                     result.Cash -= type.Cost;
@@ -333,9 +333,11 @@ namespace Great_game_API.Controllers
                     };
 
                     _context.Users.Update(result);
+                    await _context.SaveChangesAsync();
                     await _context.UserGames.AddAsync(userGame);
                     await _context.SaveChangesAsync();
-                    
+
+
                     return Ok();
                 }                
             }

@@ -40,7 +40,7 @@
 .game-container{
   border: solid 1px black;
   width: 40%;
-  min-width: 150px;
+  min-width: 350px;
   background-color: whitesmoke;
   margin-bottom: 5px;
   padding: 1px;
@@ -49,4 +49,8 @@
 .six-numbers{
   display: flex;
   align-items: center;
+}
+
+.errorContainer{
+  color: red;
 }

@@ -40,6 +40,23 @@ namespace Great_game_API.Services
 
                             game.WinningNumbers = winNum;
 
+                            var userGame = await _context.UserGames.Where(x => x.GameId == game.GameId).ToListAsync();
+                            var prize = await _context.GameTypes.FindAsync(game.GameTypeId);
+
+                            if(userGame != null && prize != null)
+                            {
+                                foreach (var user in userGame)
+                                {
+                                    var winner = await _context.Users.FindAsync(user.UserId);
+                                    if (winner != null)
+                                    {
+                                        winner.Cash += prize.Prize;
+                                        _context.Users.Update(winner);
+                                    }
+                                }
+                            }
+                            
+
                             _context.Games.Update(game);
                             await _context.SaveChangesAsync();
                         }

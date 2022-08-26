@@ -20,7 +20,7 @@ namespace Great_game_API
             services.AddDbContext<GreatGameDataContext>(
                 o => o.UseNpgsql(Configuration.GetConnectionString("GreatGameDb")));
 
-            services.AddHostedService<Worker>();
+            //services.AddHostedService<Worker>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

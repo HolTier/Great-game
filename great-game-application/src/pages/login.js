@@ -9,9 +9,6 @@ function Login(props) {
     const navigate = useNavigate();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState([]);
-    const [user, setUser] = useState()
-    const [responseStatus, setResponseStatus] = useState(0);
-    const [authenticated, setAuthenticated] = useState(sessionStorage.getItem(sessionStorage.getItem("authenticated")|| false));
 
     const tryLogin = async (usernameLogin, passwordLogin) => {
         await fetch('/api/User/Login', {
@@ -39,15 +36,9 @@ function Login(props) {
             });
     };
 
-    const login = () => {
-
-    }
     const handleSubmit = (e) => {
         e.preventDefault();
         tryLogin(username, password);
-
-        //navigate("/home");
-        //console.log(sessionStorage.getItem('authenticated'));
     };
 
     return (

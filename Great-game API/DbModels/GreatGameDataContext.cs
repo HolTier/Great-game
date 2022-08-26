@@ -14,6 +14,7 @@ namespace Great_game_API.DbModels
         public DbSet<GameType> GameTypes { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserGame> UserGames { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             
