@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Great_game_API.DbModels;
 using Microsoft.EntityFrameworkCore;
 using Great_game_API.ModelDto;
-using Great_game_API.Repository;
 
 namespace Great_game_API.Controllers
 {
@@ -44,6 +43,7 @@ namespace Great_game_API.Controllers
             }
             else
             {
+                //checks if it exists
                 var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == login.UserName && x.Password == login.Password);
                 if(user == null)
                 {
@@ -74,6 +74,8 @@ namespace Great_game_API.Controllers
                     UserName = login.UserName,
                     Password = login.Password,
                 };
+
+                //checks if it exists
                 var result = await _context.Users.FirstOrDefaultAsync(x => x.UserName == user.UserName);
                 if (result == null)
                 {
@@ -101,6 +103,7 @@ namespace Great_game_API.Controllers
             }
             else
             {
+                //checks if it exists
                 var result = await _context.Users.FindAsync(user.Id);
 
                 if(user == null)
@@ -143,8 +146,8 @@ namespace Great_game_API.Controllers
         [HttpGet("GetUserName/{username}")]
         public async Task<IActionResult> GetUserByNameAsync(string username)
         {
+            //checks if it exists
             var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == username);
-
             if (user == null)
             {
                 return NotFound();
@@ -159,8 +162,8 @@ namespace Great_game_API.Controllers
         [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> DeleteUserByIdAsync(int id)
         {
+            //checks if it exists
             var user = await _context.Users.FindAsync(id);
-
             if(user == null)
             {
                 return NotFound();
@@ -176,8 +179,8 @@ namespace Great_game_API.Controllers
         [HttpDelete("DeleteName/{username}")]
         public async Task<IActionResult> DeleteUserByNameAsync(string username)
         {
+            //checks if it exists
             var user = await _context.Users.FirstAsync(x => x.UserName == username);
-
             if (user == null)
             {
                 return NotFound();
@@ -199,6 +202,7 @@ namespace Great_game_API.Controllers
             }
             else
             {
+                //checks if it exists
                 var result = await _context.Users.FirstAsync(x => x.UserName == changeUsername.OldUsername);
                 if(result == null)
                 {
@@ -223,6 +227,7 @@ namespace Great_game_API.Controllers
             }
             else
             {
+                //checks if it exists
                 var result = await _context.Users.FirstAsync(x => x.UserName == changePassword.Username);
                 if (result == null)
                 {
@@ -247,6 +252,7 @@ namespace Great_game_API.Controllers
             }
             else
             {
+                //checks if it exists
                 var result = await _context.Users.FirstAsync(x => x.UserName == cash.Username);
                 if (result == null)
                 {
@@ -271,6 +277,7 @@ namespace Great_game_API.Controllers
             }
             else
             {
+                //checks if it exists
                 var result = await _context.Users.FirstAsync(x => x.UserName == changeRole.Username);
                 if (result == null)
                 {
@@ -302,9 +309,8 @@ namespace Great_game_API.Controllers
             }
             else
             {
-                
+                //checks if it exists
                 var result = await _context.Users.FirstAsync(x => x.UserName == addUserGame.UserName);
-
                 if(result == null)
                 {
                     return NotFound(result);
@@ -354,6 +360,7 @@ namespace Great_game_API.Controllers
             }
             else
             {
+                //checks if it exists
                 var userGames = await _context.UserGames.Where(x => x.UserId == result.Id).ToListAsync();
                 if(userGames == null)
                 {
@@ -366,7 +373,4 @@ namespace Great_game_API.Controllers
             }
         }
     }
-
-    
-    
 }

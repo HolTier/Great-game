@@ -33,6 +33,7 @@ const AdminPanel = () => {
     const [deleteID, setDeleteId] = useState(0);
 
     //Http
+    //GET
     const tryGet = async (address, option) => {
         await fetch('/api/' + address, {
             method: 'GET',
@@ -63,6 +64,7 @@ const AdminPanel = () => {
             });
     };
 
+    //PUT
     const tryPut = async (address, option, jsonBody) => {
         await fetch('/api/' + address, {
             method: 'PUT',
@@ -83,6 +85,7 @@ const AdminPanel = () => {
             });
     };
 
+    //POST
     const tryPost = async (address, option, jsonBody) => {
         await fetch('/api/' + address, {
             method: 'POST',
@@ -103,6 +106,7 @@ const AdminPanel = () => {
             });
     };
 
+    //DELETE
     const tryDelete = async (address, option) => {
         await fetch('/api/' + address, {
             method: 'DELETE',
@@ -124,6 +128,7 @@ const AdminPanel = () => {
     };
 
     //components
+    //Get roles from database to select
     const selectRole = () => {
         if(canLoadRoles) {
             tryGet('User/GetRoles', 'role')
@@ -153,6 +158,7 @@ const AdminPanel = () => {
         }
     }
 
+    //Get types from database to select
     const selectType = () => {
         if(canLoadTypes) {
             tryGet('Games/GetTypes', 'type')
@@ -182,6 +188,8 @@ const AdminPanel = () => {
         }
     }
 
+    //display numbers from 1 to 50
+    //in 6 fields
     const displayNumbers = () => {
         return(
             <div>
@@ -387,6 +395,7 @@ const AdminPanel = () => {
     );
 };
 
+//fill array
 function range(start, end) {
     return Array(end - start + 1).fill().map((_, idx) => start + idx)
 }

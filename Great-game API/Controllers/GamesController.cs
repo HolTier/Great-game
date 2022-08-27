@@ -1,10 +1,9 @@
 ﻿using Great_game_API.DbModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Great_game_API.DbModels;
 using Microsoft.EntityFrameworkCore;
 using Great_game_API.ModelDto;
-using Great_game_API.Repository;
+
 
 namespace Great_game_API.Controllers
 {
@@ -28,6 +27,7 @@ namespace Great_game_API.Controllers
             }
             else
             {
+                //checks if the game type is correct
                 var type = await _context.GameTypes.FirstOrDefaultAsync(x => x.GameTypeId == game.Type);
                 if(type == null)
                 {
@@ -90,6 +90,7 @@ namespace Great_game_API.Controllers
                 return BadRequest();
             }
             {
+                //checks if it exists
                 var result = await _context.Games.FindAsync(id);
                 if(result == null)
                 {
@@ -110,6 +111,7 @@ namespace Great_game_API.Controllers
                 return BadRequest();
             }
             {
+                //checks if it exists
                 var result = await _context.GameTypes.FindAsync(id);
                 if (result == null)
                 {
@@ -144,7 +146,8 @@ namespace Great_game_API.Controllers
                 (x.StartDate <= DateTime.Now) && (x.EndDate >= DateTime.Now))//Check date
                 .ToListAsync();
 
-            if(result == null)
+            //checks if it exists
+            if (result == null)
             {
                 return NotFound();
             }
@@ -157,6 +160,7 @@ namespace Great_game_API.Controllers
         [HttpGet("ActiveGamesUser/{username}")]
         public async Task<IActionResult> GetActiveGamesAsync(string username)
         {
+            //checks if it exists
             var user = await _context.Users.FirstAsync(x => x.UserName == username);
             if(user == null)
             {
@@ -197,6 +201,7 @@ namespace Great_game_API.Controllers
         [HttpGet("ArchiveGames/{username}")]
         public async Task<IActionResult> GetArchiveGamesAsync(string username)
         {
+            //checks if it exists
             var user = await _context.Users.FirstAsync(x => x.UserName == username);
             if (user == null)
             {
@@ -254,6 +259,7 @@ namespace Great_game_API.Controllers
             }
             else
             {
+                //checks if it exists
                 var result = await _context.GameTypes.FindAsync(type.GameTypeId);
                 if(result == null)
                 {
@@ -284,6 +290,7 @@ namespace Great_game_API.Controllers
             }
             else
             {
+                //checks if it exists
                 var result = await _context.Games.FindAsync(winDto.GameId);
                 if(result == null)
                 {

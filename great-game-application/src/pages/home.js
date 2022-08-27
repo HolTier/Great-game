@@ -3,7 +3,7 @@ import Game from "../components/game";
 
 const Home = () => {
     const [game, setGame] = useState([]);//store active games
-    const [canLoad, setCanLoad] = useState(true);
+    const [canLoad, setCanLoad] = useState(true);//prevents sending request to api and database
 
     //Get active game array from api server
     const tryGetGames = async () => {
@@ -19,7 +19,6 @@ const Home = () => {
                 else return response.json();
             })
             .then((data) => {
-                console.log(data);
                 setGame(data);
             })
             .catch((err) => {
@@ -27,13 +26,14 @@ const Home = () => {
             });
     };
 
+    //Generate games if they exist, otherwise display a message
     const panel = () => {
         if(canLoad)
         {
             tryGetGames();
             setCanLoad(false);
         }
-        console.log("game"+ game);
+
         if(game == null || game.length === 0)
             return(<p>No active games</p>)
         else

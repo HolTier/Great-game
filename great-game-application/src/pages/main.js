@@ -8,24 +8,18 @@ import Home from "./home";
 import AdminPanel from "./adminpanel";
 import Logout from "./logout";
 
-function Main(props) {
-    const [authenticated, setAuthenticated] = useState(null);
-    useEffect(() => {
-        const loggedInUser = sessionStorage.getItem("authenticated");
+function Main() {
 
-        if (loggedInUser) {
-            //console.log(sessionStorage.getItem('authenticated'));
-            setAuthenticated(loggedInUser);
-        }
-    }, []);
-
+    //checks if the user is logged in
     if (!sessionStorage.getItem('authenticated') || sessionStorage.getItem('user')==null) {
         return <Navigate replace to="/login" />;
     }
+
     else{
         return (
             <div>
                 <Navbar />
+                {/* redirects to other pages */}
                 <Routes>
                     <Route path="/home" element={<Home />}/>
                     <Route path="/archive" element={<Archive />}/>

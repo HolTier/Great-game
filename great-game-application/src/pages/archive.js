@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
 import ArchiveGame from "../components/archiveGame";
-import Game from "../components/game";
 
 const Archive = () => {
-    const [archiveGames, setArchiveGames] = useState([]);
-    const [canLoad, setCanLoad] = useState(true)
+    //constants
+    const [archiveGames, setArchiveGames] = useState([]);//store archive games
+    const [canLoad, setCanLoad] = useState(true)///prevents sending request to api and database
 
+    //http
+    //trying to get archive games for user
     const tryGetArchiveGames = async () => {
         await fetch('/api/Games/ArchiveGames/'+JSON.parse(sessionStorage.getItem('user')).userName, {
             method: 'GET',
@@ -19,7 +21,6 @@ const Archive = () => {
                 else return response.json();
             })
             .then((data) => {
-                console.log(data);
                 setArchiveGames(data);
             })
             .catch((err) => {
@@ -27,6 +28,7 @@ const Archive = () => {
             });
     };
 
+    //Generate archival games if they exist, otherwise display a message
     const panel = () => {
         if(canLoad)
         {
@@ -34,7 +36,6 @@ const Archive = () => {
             setCanLoad(false);
         }
 
-        console.log(archiveGames);
         if(archiveGames == null || archiveGames.length === 0)
             return(<p>No archival games</p>)
         else

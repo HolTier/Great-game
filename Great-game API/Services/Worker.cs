@@ -5,18 +5,14 @@ using System.Collections.Generic;
 
 namespace Great_game_API.Services
 {
+    //Add worker who checks if the game is overdue and draws the winning numbers
     public class Worker : BackgroundService
     {
-        //private readonly GreatGameDataContext _context;
         private readonly IServiceProvider _services;
-        //private readonly ILogger<Worker> _logger;
 
         public Worker(IServiceProvider services)
-        {
-            //_context = context;
+        { 
             _services = services;
-            //_logger = logger;
-            
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -24,9 +20,10 @@ namespace Great_game_API.Services
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                using (var scope = _services.CreateScope())
+                using (var scope = _services.CreateScope())//creates a scope to be able to use the database
                 {
                     var _context = scope.ServiceProvider.GetRequiredService<GreatGameDataContext>();
+                    //looking for expired games
                     var result = await _context.Games.Where(x => x.EndDate <= DateTime.Now && x.WinningNumbers == null).ToListAsync();
                     
                     if (result != null && (result as List<Game>).Count > 0)
@@ -34,6 +31,7 @@ namespace Great_game_API.Services
                         
                         foreach (var game in result)
                         {
+                            //draws the winning numbers
                             var rnd = new Random();
                             var numbers = Enumerable.Range(1, 50).OrderBy(x => rnd.Next()).Take(6).ToArray();
                             int[] winNum = numbers;
@@ -43,7 +41,8 @@ namespace Great_game_API.Services
                             var userGame = await _context.UserGames.Where(x => x.GameId == game.GameId).ToListAsync();
                             var prize = await _context.GameTypes.FindAsync(game.GameTypeId);
 
-                            if(userGame != null && prize != null)
+                            //for each user who won, he adds a reward to his account
+                            if (userGame != null && prize != null)
                             {
                                 foreach (var user in userGame)
                                 {
@@ -63,7 +62,6 @@ namespace Great_game_API.Services
                     
                     }
 
-                    //System.Diagnostics.Debug.WriteLine("Works at " + DateTime.Now);
                     System.Console.WriteLine("Worker works at " + DateTime.Now);
 
                     await Task.Delay(10000, stoppingToken);

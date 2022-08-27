@@ -1,15 +1,15 @@
 import React, {useState} from 'react';
 import {Link} from "react-router-dom";
-import {BrowserRouter as Router} from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import LoginDto from "../models/loginDto";
-
 
 function Login(props) {
+    //constants
     const navigate = useNavigate();
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState([]);
+    const [username, setUsername] = useState("");//store username
+    const [password, setPassword] = useState([]);//store password
 
+    //http
+    //trying login to account
     const tryLogin = async (usernameLogin, passwordLogin) => {
         await fetch('/api/User/Login', {
                 method: 'POST',
@@ -27,8 +27,11 @@ function Login(props) {
                 else return response.json();
             })
             .then((data) => {
+                //if successful, set the variables
                 sessionStorage.setItem('authenticated', true);
                 sessionStorage.setItem('user', JSON.stringify(data));
+
+                //change page to home
                 navigate('/home');
             })
             .catch((err) => {
@@ -36,6 +39,7 @@ function Login(props) {
             });
     };
 
+    //handler
     const handleSubmit = (e) => {
         e.preventDefault();
         tryLogin(username, password);
@@ -60,7 +64,7 @@ function Login(props) {
                 </div>
             </form>
             <p>
-                Don't have an account yet? <Link to="/register">Sign Up</Link>
+                Don't have an account yet? <Link to="/register">Sign Up</Link>{/* Navigate to register */}
             </p>
         </div>
     );

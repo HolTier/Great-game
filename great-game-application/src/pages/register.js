@@ -1,14 +1,14 @@
 import React, {useState} from 'react';
 import {Link, useNavigate} from "react-router-dom";
 
-
 const Register = () => {
+    //constants
     const navigate = useNavigate();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [responseStatus, setResponseStatus] = useState(0);
-    const [authenticated, setAuthenticated] = useState(sessionStorage.getItem(sessionStorage.getItem("authenticated")|| false));
 
+    //http
+    //trying to register account
     const tryRegister = async (usernameLogin, passwordLogin) => {
         await fetch('/api/User/Register', {
             method: 'POST',
@@ -26,9 +26,11 @@ const Register = () => {
                 else return response.json();
             })
             .then((data) => {
+                //if successful, set the variables
                 sessionStorage.setItem('authenticated', true);
                 sessionStorage.setItem('user', JSON.stringify(data));
-                console.log('ok');
+
+                //change page to home
                 navigate('/home');
             })
             .catch((err) => {
@@ -36,13 +38,10 @@ const Register = () => {
             });
     };
 
+    //handler
     const handleSubmit = (e) => {
         e.preventDefault();
         tryRegister(username, password);
-        console.log("user: " + username + " password: " + password);
-
-        //navigate("/home");
-        //console.log(sessionStorage.getItem('authenticated'));
     };
 
     return (
@@ -64,7 +63,7 @@ const Register = () => {
                 </div>
             </form>
             <p>
-                Do you have an account already?<Link to="/"> Sign in. </Link>
+                Do you have an account already?<Link to="/"> Sign in. </Link>{/* Navigate to register */}
             </p>
         </div>
     );

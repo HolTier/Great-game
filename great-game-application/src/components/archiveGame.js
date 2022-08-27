@@ -2,11 +2,13 @@ import React from 'react';
 
 const ArchiveGame = (props) => {
 
+    //formatting date
     const formatDate = (dateString) => {
         const options = { year: "numeric", month: "numeric", day: "numeric"}
         return new Date(dateString).toLocaleDateString(undefined, options)
     }
 
+    //if winning numbers exist show them
     const winningNumbers = () => {
         if(props.archiveGame.winningNumbers == null)
         {

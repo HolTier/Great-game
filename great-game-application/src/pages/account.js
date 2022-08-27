@@ -2,10 +2,12 @@ import React, {useState} from 'react';
 import AccountInformation from "../components/accountInformation";
 
 const Account = () => {
-    const [username, setUsername] = useState('');
-    const [newPassword, setNewPassword] = useState('');
-    const [addCash, setAddCash] = useState();
+    //constants
+    const [username, setUsername] = useState('');//store username
+    const [newPassword, setNewPassword] = useState('');//store password
+    const [addCash, setAddCash] = useState();//store cash
 
+    //http
     const tryPutChange = async (address, jsonBody) => {
         await fetch('/api/User/' + address, {
             method: 'PUT',
@@ -28,6 +30,7 @@ const Account = () => {
             });
     };
 
+    //handlers
     const handleSubmitUsername = (e) => {
         e.preventDefault();
         tryPutChange('ChangeUsername', JSON.stringify({

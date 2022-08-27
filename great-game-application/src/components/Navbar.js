@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 
 const Navbar = () => {
     const adminPanel = () => {
+        //checks if the user has access
         if(JSON.parse(sessionStorage.getItem('authenticated')).roleId === 1)
         {
             return (

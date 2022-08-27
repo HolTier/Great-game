@@ -20,7 +20,9 @@ namespace Great_game_API
             services.AddDbContext<GreatGameDataContext>(
                 o => o.UseNpgsql(Configuration.GetConnectionString("GreatGameDb")));
 
-            //services.AddHostedService<Worker>();
+            //Add worker who checks if the game is overdue and draws the winning numbers
+            //Check Services/Worker.cs
+            services.AddHostedService<Worker>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -32,7 +34,6 @@ namespace Great_game_API
                 app.UseSwaggerUI();
             }
 
-            //app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
 

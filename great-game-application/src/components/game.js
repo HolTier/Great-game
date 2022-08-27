@@ -1,18 +1,18 @@
 import React, {useState} from 'react';
-import moment from "moment";
 
 const Game = (props) => {
+    //constants
     const [numbers, setNumbers] = useState([1, 1, 1, 1, 1, ]);
     const [visible, setVisible] = useState(false);
     const [errorMessage, setErrorMessage] = useState("Error");
 
-    const handleNumbersChanges = index => e => {
-        let newArr = [...numbers]; //copy numbers array
-        newArr[index] = parseInt(e.target.value);
-
-        setNumbers(newArr);
+    const num = range(1, 50);
+    const formatDate = (dateString) => {
+        const options = { year: "numeric", month: "numeric", day: "numeric"}
+        return new Date(dateString).toLocaleDateString(undefined, options)
     }
 
+    //http
     const tryAddGameUser = async () => {
         await fetch('/api/User/AddUserGame', {
             method: 'POST',
@@ -43,19 +43,27 @@ const Game = (props) => {
             });
     };
 
+    //handlers
+    const handleNumbersChanges = index => e => {
+        let newArr = [...numbers]; //copy numbers array
+        newArr[index] = parseInt(e.target.value);
+
+        setNumbers(newArr);
+    }
+
     const handleAddClick = () => {
         let canAdd = true;
+
+        //checks if the numbers are different
         for(let i = 0;i<5;i++)
         {
             for(let j = i+1; j<6; j++)
             {
-                //console.log("i:" + i + " num: " + numbers[i] + "| j: " + j + " num: " + numbers[j]);
                 if(numbers[i] === numbers[j])
                 {
                     setVisible(true)
                     canAdd = false;
                     setErrorMessage("The numbers must be different")
-                    //return;
                 }
             }
         }
@@ -72,14 +80,16 @@ const Game = (props) => {
         }
     };
 
+    //error message
     const error = () => {
-        //console.log(visible)
         if(visible)
         {
             return(<div className="errorContainer"><p>{errorMessage}</p></div>)
         }
     }
 
+    //display numbers from 1 to 50
+    //in 6 fields
     const displayNumbers = () => {
         return(
             <div>
@@ -148,12 +158,6 @@ const Game = (props) => {
                     </div>
                 </div>
         );
-    }
-
-    const num = range(1, 50);
-    const formatDate = (dateString) => {
-        const options = { year: "numeric", month: "numeric", day: "numeric"}
-        return new Date(dateString).toLocaleDateString(undefined, options)
     }
 
     return (
