@@ -50,6 +50,21 @@ namespace Great_game_API.DbModels
                     new Role { RoleId = 2, RoleName = "User"}
                 );
 
+            modelBuilder.Entity<User>()
+                .HasData(
+                    new User { Id = 1, UserName = "Admin", Password = "Admin", Cash = 100000, RoleId = 1 }
+                );
+
+            modelBuilder.Entity<GameType>()
+                .HasData(
+                    new GameType { GameTypeId=1, GameName="Standart", Cost=2, Prize=10000 }
+                );
+
+            modelBuilder.Entity<Game>()
+                .HasData(
+                    new Game { GameId = 1, GameTypeId = 1, StartDate = DateTime.Now, EndDate = DateTime.Now.AddDays(10) }
+                );
+
             modelBuilder.UseSerialColumns();
 
             

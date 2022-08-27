@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import LoginDto from "../models/loginDto";
 import AccountInformation from "../components/accountInformation";
 
 const Account = () => {
@@ -21,7 +20,6 @@ const Account = () => {
                 else return response.json();
             })
             .then((data) => {
-                console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
                 sessionStorage.setItem('user', JSON.stringify(data));
                 window.location.reload(false);
             })

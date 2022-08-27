@@ -306,7 +306,7 @@ const AdminPanel = () => {
 
     const handleSubmitForceWin = (e) => {
         e.preventDefault();
-        tryPost('Games/ForceWin', '', JSON.stringify({
+        tryPut('Games/ForceWin', '', JSON.stringify({
             gameID: parseInt(winId),
             winningNumbers: numbers
         }));

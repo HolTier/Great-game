@@ -27,7 +27,7 @@ const Register = () => {
             })
             .then((data) => {
                 sessionStorage.setItem('authenticated', true);
-                sessionStorage.setItem('user', data);
+                sessionStorage.setItem('user', JSON.stringify(data));
                 console.log('ok');
                 navigate('/home');
             })

@@ -1,8 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import Game from "../components/game";
-import GamesDto from "../models/gamesDto";
-import {Get} from "../api/restapi";
-import {wait} from "@testing-library/user-event/dist/utils";
 
 const Home = () => {
     const [game, setGame] = useState([]);//store active games

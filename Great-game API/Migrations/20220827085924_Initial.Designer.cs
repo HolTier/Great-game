@@ -3,6 +3,7 @@ using System;
 using Great_game_API.DbModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Great_game_API.Migrations
 {
     [DbContext(typeof(GreatGameDataContext))]
-    partial class GreatGameDataContextModelSnapshot : ModelSnapshot
+    [Migration("20220827085924_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,9 +54,9 @@ namespace Great_game_API.Migrations
                         new
                         {
                             GameId = 1,
-                            EndDate = new DateTime(2022, 9, 6, 11, 0, 28, 638, DateTimeKind.Local).AddTicks(9134),
+                            EndDate = new DateTime(2022, 9, 6, 10, 59, 24, 309, DateTimeKind.Local).AddTicks(7585),
                             GameTypeId = 1,
-                            StartDate = new DateTime(2022, 8, 27, 11, 0, 28, 638, DateTimeKind.Local).AddTicks(9092)
+                            StartDate = new DateTime(2022, 8, 27, 10, 59, 24, 309, DateTimeKind.Local).AddTicks(7541)
                         });
                 });
 

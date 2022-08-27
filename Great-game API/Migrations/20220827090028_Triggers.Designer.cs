@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Great_game_API.Migrations
 {
     [DbContext(typeof(GreatGameDataContext))]
-    [Migration("20220825082533_Initial")]
-    partial class Initial
+    [Migration("20220827090028_Triggers")]
+    partial class Triggers
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -49,6 +49,15 @@ namespace Great_game_API.Migrations
                     b.HasIndex("GameTypeId");
 
                     b.ToTable("Games");
+
+                    b.HasData(
+                        new
+                        {
+                            GameId = 1,
+                            EndDate = new DateTime(2022, 9, 6, 11, 0, 28, 638, DateTimeKind.Local).AddTicks(9134),
+                            GameTypeId = 1,
+                            StartDate = new DateTime(2022, 8, 27, 11, 0, 28, 638, DateTimeKind.Local).AddTicks(9092)
+                        });
                 });
 
             modelBuilder.Entity("Great_game_API.DbModels.GameType", b =>
@@ -72,6 +81,15 @@ namespace Great_game_API.Migrations
                     b.HasKey("GameTypeId");
 
                     b.ToTable("GameTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            GameTypeId = 1,
+                            Cost = 2f,
+                            GameName = "Standart",
+                            Prize = 10000f
+                        });
                 });
 
             modelBuilder.Entity("Great_game_API.DbModels.Role", b =>
@@ -130,6 +148,16 @@ namespace Great_game_API.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Cash = 100000f,
+                            Password = "Admin",
+                            RoleId = 1,
+                            UserName = "Admin"
+                        });
                 });
 
             modelBuilder.Entity("Great_game_API.DbModels.UserGame", b =>

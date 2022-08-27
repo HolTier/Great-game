@@ -6,6 +6,7 @@ import Archive from "./archive";
 import Account from "./account";
 import Home from "./home";
 import AdminPanel from "./adminpanel";
+import Logout from "./logout";
 
 function Main(props) {
     const [authenticated, setAuthenticated] = useState(null);
@@ -30,6 +31,7 @@ function Main(props) {
                     <Route path="/archive" element={<Archive />}/>
                     <Route path="/account" element={<Account />}/>
                     <Route path="/adminpanel" element={<AdminPanel />} />
+                    <Route path="/logout" element={<Logout />} />
                 </Routes>
             </div>
         );

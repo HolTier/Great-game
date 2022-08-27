@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 
 const Navbar = () => {
     const adminPanel = () => {
-        if(sessionStorage.getItem('authenticated'))
+        if(JSON.parse(sessionStorage.getItem('authenticated')).roleId === 1)
         {
             return (
                 <li>
@@ -24,6 +24,9 @@ const Navbar = () => {
                 <Link to="/archive">Archive</Link>
             </li>
             {adminPanel()}
+            <li>
+                <Link to="/logout">Logout</Link>
+            </li>
         </div>
     );
 };
